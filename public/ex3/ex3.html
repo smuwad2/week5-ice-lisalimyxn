@@ -69,19 +69,20 @@
             // If a specific category is chosen, fetch items for that category
             // url: http://localhost:3010/items?category=categoryName
             const category = document.getElementById('selectCategory').value;
-            let url = '/items';
-            if (category !== '0' && category !== 'all') {
-                url += `?category=${category}`;
-            }
+        let url = '/items';  // relative URL works for the browser
 
-            try {
-                const res = await fetch(url); // use fetch instead of axios
-                const items = await res.json();
-                showItems(items);
-            } catch (err) {
-                console.error(err);
-                document.getElementById('itemsList').innerHTML = `<p class="text-center">Items not found</p>`;
-            }
+        if (category !== '0' && category !== 'all') {
+            url += `?category=${category}`;
+        }
+
+        try {
+            const res = await fetch(url);       // <-- browser fetch
+            const items = await res.json();
+            showItems(items);
+        } catch (err) {
+            console.error(err);
+            document.getElementById('itemsList').innerHTML = `<p class="text-center">Items not found</p>`;
+        }
         }
 
         function showItems(items) {
