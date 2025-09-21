@@ -24,9 +24,57 @@
         </div>
         <script>
             function getData() {
- 
-            }
+                try {
+                    let inputType = document.getElementById("type").value;
+                    let inputLimit = document.getElemenById("limit").value;
+                    const response = await axios.get("/data", {
+                        "params": { 
+                            limit: inputLimit,
+                            type: inputType
+                        }
+                    });
 
+                    createTable(response.data);
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            }
+            function createTable (dataObj) {
+                const resultDiv = document.getElementById("result");
+                while (resultDiv.firstChild) {
+                    resultDiv.firstChild.remove();
+                }
+                const h2Elem = document.createElement("h2");
+                const h2Val = dataObj["type"];
+                h2Elem.innerText = h2Val;
+                resultDiv.appendChild(h2Elem);
+
+                const tableElem = document.createElement("table");
+                tableElem.className ="table";
+                const tbodyElem = document.createElement("tbody");
+                const trElem = document.createElement("tr");
+                const tblHeadings = Object.keys(dataObj["records"][0]);
+                for (const headingVal of tblHeadings) {
+                    const thElem = document.createElement("th");
+                    thElem.innerText = headingVal;
+                    trElem.appendChild(thElem);
+                }
+                tbodyElem.appendchild(trElem);
+            
+                for (let i=0; i<dataObj["records"].length; i++) {
+                    const trElem = document.createElement("tr");
+                    for (letj=0; j<tblHeadings.length; j++) {
+                        const tdVal = dataObj["records"][i][tblHeadings[j]];
+                        const tdelem = document.createElement("td");
+                        tdElem.innerText. tdVal;
+                        trElem.appendChild(tdElem);
+                    }
+                    tbodyElem.appendChild(trElem);
+                }
+                tableElem.appendChild(tbodyElem);
+                resultDiv.appendChild(tableElem);
+            }
+    
         </script>
 </body>
 </html>
